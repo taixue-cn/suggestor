@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1, "id": "suggestor", "version": "${version}",
+  "name": "Suggestor", "description": "Server suggestions for mods, resource packs and shader packs.",
+  "environment": "client", "entrypoints": {"client": ["cc.taixue.suggestor.client.SuggestorClient"]},
+  "depends": {"fabricloader": ">=0.20.1", "fabric-api": "*", "cloth-config": ">=26.3.159", "minecraft": "26.3", "java": ">=25"}
+}

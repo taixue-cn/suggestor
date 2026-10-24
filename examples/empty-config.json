@@ -1,0 +1,13 @@
+{
+  "serverId": "00000000-0000-0000-0000-000000000001",
+  "handshakeSeconds": 30,
+  "decisionSeconds": 180,
+  "suggestions": [],
+  "assignments": [],
+  "missingClient": {
+    "action": "SILENT",
+    "message": "未检测到兼容的 Suggestor 客户端 MOD，请安装后重新连接。",
+    "title": "推荐安装 Suggestor",
+    "subtitle": "安装后可接收服务器的组件建议。"
+  }
+}

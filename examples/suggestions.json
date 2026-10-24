@@ -1,0 +1,83 @@
+{
+  "serverId": "00000000-0000-0000-0000-000000000001",
+  "handshakeSeconds": 30,
+  "decisionSeconds": 180,
+  "suggestions": [
+    {
+      "id": "building-tools",
+      "revision": 1,
+      "kind": "MOD",
+      "action": "ADD",
+      "level": "RECOMMENDED",
+      "targetId": "building_tools",
+      "name": "建筑辅助工具",
+      "reason": "提供服务器建筑功能。",
+      "targetVersion": "1.0.0",
+      "url": "http://downloads.example.invalid/building-tools.jar",
+      "fileName": "building-tools.jar",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "size": 12345,
+      "minecraft": [
+        "26.3"
+      ],
+      "requires": []
+    },
+    {
+      "id": "server-resources",
+      "revision": 1,
+      "kind": "RESOURCE_PACK",
+      "action": "ADD",
+      "level": "SUGGESTED",
+      "targetId": "server-resources.zip",
+      "name": "服务器资源包",
+      "reason": "使用统一的建筑材质。",
+      "targetVersion": "2026.10",
+      "url": "https://downloads.example.invalid/server-resources.zip",
+      "fileName": "server-resources.zip",
+      "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "size": 12345
+    },
+    {
+      "id": "old-shader",
+      "revision": 1,
+      "kind": "SHADER_PACK",
+      "action": "REMOVE",
+      "level": "SUGGESTED",
+      "targetId": "old-shader.zip",
+      "name": "旧光影包",
+      "reason": "这个文件已停止维护，建议移除。",
+      "fromSha256": "2222222222222222222222222222222222222222222222222222222222222222"
+    }
+  ],
+  "assignments": [
+    {
+      "id": "builders",
+      "audience": {
+        "all": false,
+        "players": [
+          "Alice"
+        ],
+        "permissions": [
+          "suggestor.audience.builder"
+        ]
+      },
+      "suggestions": [
+        "building-tools",
+        "server-resources",
+        "old-shader"
+      ],
+      "ui": {
+        "title": "建筑师组件建议",
+        "introduction": "这些组件可以帮助你使用服务器功能。",
+        "accept": "采纳所选建议",
+        "ignore": "暂时不用"
+      }
+    }
+  ],
+  "missingClient": {
+    "action": "SILENT",
+    "message": "未检测到兼容的 Suggestor 客户端 MOD，请安装后重新连接。",
+    "title": "推荐安装 Suggestor",
+    "subtitle": "安装后可接收服务器的组件建议。"
+  }
+}

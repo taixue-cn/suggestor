@@ -1,0 +1,13 @@
+name: Suggestor
+version: '0.1.0'
+main: cc.taixue.suggestor.server.SuggestorPlugin
+api-version: '26.3'
+author: taixue-cn
+commands:
+  suggestor:
+    description: Manage server suggestions
+    permission: suggestor.admin
+    usage: /suggestor status|reload|send <player>
+permissions:
+  suggestor.admin:
+    default: op

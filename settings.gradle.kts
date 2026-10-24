@@ -1,0 +1,3 @@
+pluginManagement { repositories { maven("https://maven.fabricmc.net/"); gradlePluginPortal(); mavenCentral() } }
+rootProject.name = "suggestor"
+include("core", "updater", "server", "client")
