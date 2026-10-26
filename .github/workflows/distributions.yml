@@ -1,0 +1,65 @@
+name: Maintenance distributions
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: distributions-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: |
+            21
+            25
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Test and build distributions
+        env:
+          CI: 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash gradlew build --no-daemon
+          mkdir -p dist
+          find . -path "*/build/libs/*.jar" ! -path "./dist/*" ! -name "*dev*" ! -name "*javadoc*" -exec cp {} dist/ \;
+      - name: Package exact source and checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          git archive --format=tar.gz --prefix=source/ HEAD > dist/source.tar.gz
+          test "$(find dist -type f ! -name source.tar.gz ! -name SHA256SUMS | wc -l)" -gt 0
+          (cd dist && find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: distributions
+          path: dist/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Release verified distributions
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          tag="build-${GITHUB_SHA:0:12}"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" dist/* --clobber
+          else
+            gh release create "$tag" dist/* --target "$GITHUB_SHA" --title "Verified build ${GITHUB_SHA:0:12}" --generate-notes --latest
+          fi
